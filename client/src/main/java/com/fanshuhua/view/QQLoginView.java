@@ -194,7 +194,7 @@ public class QQLoginView extends JFrame implements ActionListener, ItemListener 
             if(!checkUsernameAndPassword(username,password)){
                 return;
             }
-            String res=HttpRequest.sendGet(PropertiesUtil.get("serverUrl")+"Login", "username="+username+"&password="+new String(password));
+            String res=HttpRequest.sendGet(PropertiesUtil.get("serverUrl")+"Login", "id="+username+"&password="+new String(password));
             JSONObject jsonObject = JSONObject.parseObject(res);
             if (Login.login(jsonObject)){
                 dispose();

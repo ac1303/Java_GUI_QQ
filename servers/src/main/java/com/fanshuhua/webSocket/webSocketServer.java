@@ -32,7 +32,7 @@ public class webSocketServer {
 
     @OnMessage
     public void onMessage(String message,Session session) {
-        System.out.println("收到消息：" + message);
+//        System.out.println("收到"+getSessionId(session)+"消息：" + message);
         JSONObject object = JSONObject.parseObject(message);
         String type = object.getString("type");
         if (type.equals("friend")) {
@@ -62,11 +62,19 @@ public class webSocketServer {
     public void privateChat(Session session,String message,String toUserId){
 //        查询发送人的会话
         Session session1 = webSocketMap.get(toUserId);
+        String sender = getSessionId(session);
+        JSONObject object = new JSONObject();
+        object.put("sender",sender);
+        object.put("message",message);
         if (session1 != null) {
-            session1.getAsyncRemote().sendText(message);
+            session1.getAsyncRemote().sendText(object.toJSONString());
+            object.put("status","成功");
         }else {
-            session.getAsyncRemote().sendText("对方不在线！");
+            object.put("status","失败");
+//            描述
+            object.put("description","对方不在线");
         }
+        session.getAsyncRemote().sendText(object.toJSONString());
     }
 
 
@@ -83,6 +91,16 @@ public class webSocketServer {
     }
 
 
+//    查询当前会话key
+    public String getSessionId(Session session){
+        for (String key : webSocketMap.keySet()) {
+            if (webSocketMap.get(key) == session) {
+                return key;
+            }
+        }
+        return null;
+    }
+
     /**
      * 处理失去连接的方法
      *
@@ -97,5 +115,14 @@ public class webSocketServer {
             }
         }
         System.out.println(webSocketMap);
+    }
+
+//    判断用户是否在线
+    public static boolean isOnline(String userId){
+        if (webSocketMap.get(userId) != null) {
+            return true;
+        }else {
+            return false;
+        }
     }
 }

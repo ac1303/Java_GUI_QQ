@@ -18,6 +18,6 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=utf-8");
-        resp.getWriter().write(String.valueOf(LoginAndRegister.login(req.getParameter("studentId"),req.getParameter("password"))));
+        resp.getWriter().write(String.valueOf(LoginAndRegister.login(req.getParameter("id"),req.getParameter("password"))));
     }
 }

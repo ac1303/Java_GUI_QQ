@@ -25,6 +25,7 @@ public class MsgWebSocket extends WebSocketClient {
     @Override
     public void onMessage(String s) {
         System.out.println("收到消息：" + s);
+
     }
 
     @Override
@@ -57,16 +58,14 @@ public class MsgWebSocket extends WebSocketClient {
     }
 
     public static void main(String[] args) {
-        MsgWebSocket client = new MsgWebSocket("ws://localhost:8080/webSocket/", "10000");
+        MsgWebSocket client = new MsgWebSocket("ws://localhost:8080/webSocket/", "10001");
         client.connect();
-        MsgWebSocket client2 = new MsgWebSocket("ws://localhost:8080/webSocket/", "10001");
-        client2.connect();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        client.sendMessage("hello","friend","text","10001");
+        client.sendMessage("hello","friend","text","10002");
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

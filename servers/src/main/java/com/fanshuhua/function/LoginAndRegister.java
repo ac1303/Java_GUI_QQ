@@ -5,6 +5,7 @@ import com.fanshuhua.dao.DBConnect;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * @author 范书华
@@ -12,63 +13,23 @@ import java.sql.PreparedStatement;
  */
 public class LoginAndRegister {
 
-    private static PreparedStatement preparedStatement = null;
-    private static Connection connection = null;
     public static JSONObject login(String username, String password) {
-
-        JSONObject jsonObject = new JSONObject();
-//        状态码
-        jsonObject.put("status", "success");
-//       描述
-        jsonObject.put("description", "登录成功");
-//        好友数据
-        JSONObject friends = new JSONObject();
-        for (int i=0;i<=10;i++){
-            JSONObject friend = new JSONObject();
-            friend.put("id", i);
-            friend.put("name", "好友"+i);
-            friend.put("avatar",i+1);
-            if (i%2==0) {
-                friend.put("status", "离线");
-            }else {
-                friend.put("status", "在线");
-            }
-            friends.put(String.valueOf(i), friend);
+        System.out.println("username: " + username);
+        System.out.println("password: " + password);
+        JSONObject jsonObject = DBConnect.checkIdAndPsw(username, password);
+        if (jsonObject.getString("status").equals("success")) {
+//            获取好友信息
+            JSONObject friends = DBConnect.getFriendsInfo(username);
+            jsonObject.put("friends", friends);
+//            获取群聊信息
+            JSONObject groups = DBConnect.getGroupsInfo(username);
+            jsonObject.put("groups", groups);
         }
-        jsonObject.put("friends", friends);
-//        群聊数据
-        JSONObject groups = new JSONObject();
-        for (int i=0;i<=10;i++){
-            JSONObject group = new JSONObject();
-            group.put("id", i);
-            group.put("name", "群聊"+i);
-            group.put("avatar",i+1);
-            groups.put(String.valueOf(i), group);
-        }
-        jsonObject.put("groups", groups);
-//        用户信息
-        JSONObject user = new JSONObject();
-        user.put("id", username);
-        user.put("nickname", "张三");
-        user.put("avatar", 2);
-        user.put("signature", "这是张三的个性签名");
-        jsonObject.put("user", user);
-
-        System.out.println(jsonObject.toJSONString());
+        System.out.println(jsonObject);
         return jsonObject;
     }
 
-    public static JSONObject login1(String username, String password) {
-        JSONObject jsonObject = new JSONObject();
-        DBConnect dbConnect = new DBConnect();
-
-        String sql = "select * from qquser where q_id = ? and q_password = ?";
-
-        try {
-
-//            preparedStatement = connection.prepareStatement(sql1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) {
+        System.out.println(login("100000", "123456"));
     }
 }

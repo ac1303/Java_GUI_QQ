@@ -260,7 +260,7 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
                 jls[i].setForeground(Color.GRAY);
             }
             jls[i].setIcon(new ImageIcon(this.getClass().getClassLoader().getResource(firendHead)));
-            jls[i].setText(friend.get("name")+"("+friend.get("status")+")");
+            jls[i].setText(friend.get("nickname")+"("+friend.get("status")+")");
             jls[i].setHorizontalAlignment(SwingConstants.LEFT);
 //            设置点击事件
             int finalI = i;
@@ -294,7 +294,7 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
             //new JLabel(文本,图片地址,放的位置);
             JSONObject group = groups.getJSONObject(String.valueOf(i));
             String groupHead="images/QQfaces/LargeImage/"+group.get("avatar")+".jpg";
-            jls[i] = new JLabel((String) group.get("name"),new ImageIcon(this.getClass().getClassLoader().getResource(groupHead)),JLabel.LEFT);
+            jls[i] = new JLabel((String) group.get("nickname"),new ImageIcon(this.getClass().getClassLoader().getResource(groupHead)),JLabel.LEFT);
             jPanel.add(jls[i]);
         }
         jPanel.setLayout(new GridLayout(50, 1, 0,10));
