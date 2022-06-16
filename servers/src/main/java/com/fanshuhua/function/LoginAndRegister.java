@@ -1,6 +1,10 @@
 package com.fanshuhua.function;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fanshuhua.dao.DBConnect;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 /**
  * @author 范书华
@@ -8,6 +12,8 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class LoginAndRegister {
 
+    private static PreparedStatement preparedStatement = null;
+    private static Connection connection = null;
     public static JSONObject login(String username, String password) {
 
         JSONObject jsonObject = new JSONObject();
@@ -50,5 +56,19 @@ public class LoginAndRegister {
 
         System.out.println(jsonObject.toJSONString());
         return jsonObject;
+    }
+
+    public static JSONObject login1(String username, String password) {
+        JSONObject jsonObject = new JSONObject();
+        DBConnect dbConnect = new DBConnect();
+
+        String sql = "select * from qquser where q_id = ? and q_password = ?";
+
+        try {
+
+//            preparedStatement = connection.prepareStatement(sql1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
