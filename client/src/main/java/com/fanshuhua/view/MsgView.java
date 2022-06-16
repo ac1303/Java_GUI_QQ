@@ -2,6 +2,7 @@ package com.fanshuhua.view;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fanshuhua.Model.MsgViewVo;
+import com.fanshuhua.Model.WebSocket;
 import com.fanshuhua.webSocket.MsgWebSocket;
 
 import javax.swing.*;
@@ -72,8 +73,6 @@ public class MsgView extends JFrame{
     }
 
     private void initGUI() {
-        MsgWebSocket mws = new MsgWebSocket("ws://192.168.0.115:8080/webSocket/", userId);
-        mws.connect();
         try {
             setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             {
@@ -105,7 +104,7 @@ public class MsgView extends JFrame{
                             if("在线".equals(friendStatus) && !"".equals(msg)){
                                 jTextArea1.append(userName+"："+msg+"\r\n");
                                 jTextArea2.setText("");
-                                mws.sendMessage(msg,"friend","text",friendId);
+                                WebSocket.s.sendMessage(msg,"friend","text",friendId);
                             }else if("".equals(msg)){
                                 JOptionPane.showMessageDialog(null,"不可发送空文本！");
                             }else{
