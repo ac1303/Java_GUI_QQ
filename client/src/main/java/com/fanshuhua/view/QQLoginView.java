@@ -1,11 +1,9 @@
 package com.fanshuhua.view;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fanshuhua.Model.WebSocket;
 import com.fanshuhua.function.Login;
 import com.fanshuhua.http.HttpRequest;
 import com.fanshuhua.properties.PropertiesUtil;
-import com.fanshuhua.webSocket.MsgWebSocket;
 
 import javax.swing.*;
 import java.awt.*;

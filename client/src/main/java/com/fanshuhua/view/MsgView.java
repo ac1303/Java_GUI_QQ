@@ -1,12 +1,9 @@
 package com.fanshuhua.view;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fanshuhua.Model.MsgViewVo;
-import com.fanshuhua.Model.WebSocket;
-import com.fanshuhua.webSocket.MsgWebSocket;
+import com.fanshuhua.Model.qqPublicVar;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -104,7 +101,7 @@ public class MsgView extends JFrame{
                             if("在线".equals(friendStatus) && !"".equals(msg)){
                                 jTextArea1.append(userName+"："+msg+"\r\n");
                                 jTextArea2.setText("");
-                                WebSocket.s.sendMessage(msg,"friend","text",friendId);
+                                qqPublicVar.s.sendMessage(msg,"friend","text",friendId);
                             }else if("".equals(msg)){
                                 JOptionPane.showMessageDialog(null,"不可发送空文本！");
                             }else{

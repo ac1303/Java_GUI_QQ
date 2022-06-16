@@ -23,6 +23,16 @@ public class webSocketServer {
         System.out.println("连接成功");
         System.out.println("当前建立连接用户：" + userId);
         webSocketMap.put(userId,session);
+
+//        群发用户上线消息
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type","在线");
+        jsonObject.put("userId",userId);
+        for(String key:webSocketMap.keySet()) {
+            if (!key.equals(userId)) {
+                webSocketMap.get(key).getAsyncRemote().sendText(jsonObject.toJSONString());
+            }
+        }
     }
     @OnClose
     public void onClose(Session session){
@@ -108,11 +118,20 @@ public class webSocketServer {
      */
     public static void lostConnection(Session session){
         //        查询对应id
+        String id = null;
         for (String key : webSocketMap.keySet()) {
             if (webSocketMap.get(key).equals(session)) {
                 webSocketMap.remove(key);
+                id = key;
                 System.out.println("移除用户：" + key);
             }
+        }
+        //        群发用户下线消息
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type","离线");
+        jsonObject.put("userId",id);
+        for(String key:webSocketMap.keySet()) {
+            webSocketMap.get(key).getAsyncRemote().sendText(jsonObject.toJSONString());
         }
         System.out.println(webSocketMap);
     }

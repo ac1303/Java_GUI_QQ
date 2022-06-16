@@ -1,7 +1,7 @@
 package com.fanshuhua.webSocket;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fanshuhua.Model.MsgViewVo;
+import com.fanshuhua.Model.qqPublicVar;
 import com.fanshuhua.view.MsgView;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -28,14 +28,26 @@ public class MsgWebSocket extends WebSocketClient {
     public void onMessage(String s) {
         System.out.println(s);
         JSONObject jsonObject = JSONObject.parseObject(s);
-        String friendId = jsonObject.getString("sender");
-        System.out.println(friendId);
-        MsgView msgView = MsgViewVo.getMap(friendId);
-        if(msgView != null){
-            msgView.printFriendMsg(jsonObject.getString("message"));
+//        接收到用户上线下线消息
+        if (jsonObject.getString("type").equals("在线")||jsonObject.getString("type").equals("离线")) {
+            JSONObject friends=qqPublicVar.userInfo.getFriends();
+            for (int i=0;i<friends.size();i++) {
+                JSONObject friend = friends.getJSONObject(String.valueOf(i));
+                if (friend.getString("id").equals(jsonObject.getString("userId"))) {
+                    friend.put("status", jsonObject.getString("type"));
+                    friends.put(String.valueOf(i),friend);
+                    break;
+                }
+            }
+            qqPublicVar.userInfo.setFriends(friends);
+            qqPublicVar.qqMainView.setFriendScrollPane(friends);
+        }else if (jsonObject.getString("type").equals("friend")) {
+            String friendId = jsonObject.getString("sender");
+            MsgView msgView = qqPublicVar.msgViewList.get(friendId);
+            if (msgView != null) {
+                msgView.printFriendMsg(jsonObject.getString("message"));
+            }
         }
-//        MsgView msgView = new MsgView();
-//        msgView.printFriendMsg(s);
     }
 
     @Override
@@ -69,38 +81,8 @@ public class MsgWebSocket extends WebSocketClient {
     }
 
     public static void main(String[] args) {
-        //    {
-//        friendId="10003";
-//        friendName="董小绿";
-//        friendStatus="在线";
-//        friendAvatar="1";
-//        userId="10001";
-//        userName="龙破天";
-//    }
-        String s = "{friendId:10003,friendName:'董小绿'," +
-                "friendStatus:'在线',friendAvatar:1," +
-                "userId:'10001',userName:'龙破天'}";
-        JSONObject object = new JSONObject();
-        object.put("friendId","10003");
-        object.put("friendName","董小绿");
-        object.put("friendStatus","在线");
-        object.put("friendAvatar","1");
-        object.put("userId","10001");
-        object.put("userName","龙破天");
-
-//        MsgWebSocket client = new MsgWebSocket("ws://192.168.0.115:8080/webSocket/", "10001");
-//        client.connect();
-
-        MsgView inst = new MsgView(object);
-        inst.setLocationRelativeTo(null);
-        inst.setVisible(true);
-        MsgViewVo.setMap("10003",inst);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-//        client.sendMessage("hello","friend","text","10003");
+        MsgWebSocket msgWebSocket = new MsgWebSocket("ws://localhost:8080/webSocket/","100001");
+        msgWebSocket.connect();
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

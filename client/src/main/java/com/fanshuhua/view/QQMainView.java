@@ -2,7 +2,7 @@ package com.fanshuhua.view;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fanshuhua.Model.UserInfo;
-import com.fanshuhua.Model.WebSocket;
+import com.fanshuhua.Model.qqPublicVar;
 import com.fanshuhua.properties.PropertiesUtil;
 import com.fanshuhua.webSocket.MsgWebSocket;
 
@@ -21,14 +21,8 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
     public void init(UserInfo userInfo) {
         this.userInfo = userInfo;
 
-        WebSocket.s=new MsgWebSocket(PropertiesUtil.get("websocketUrl"), userInfo.getId());
-        WebSocket.s.connect();
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        WebSocket.s.sendMessage("hello","friend","text","10001");
+        qqPublicVar.s=new MsgWebSocket(PropertiesUtil.get("websocketUrl"), userInfo.getId());
+        qqPublicVar.s.connect();
 
         setSize(300,680);
         setUndecorated(true);
@@ -54,7 +48,7 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
         closeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WebSocket.s.close();
+                qqPublicVar.s.close();
                 dispose();
             }
         });
@@ -255,7 +249,7 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
     /**
      * 设置联系人列表
      */
-    public void setFriendScrollPane() {
+    public void setFriendScrollPane(JSONObject friends) {
         friendScrollPane = new JScrollPane();
         add(friendScrollPane);
         friendScrollPane.setBounds(0,190,300,460);
@@ -264,7 +258,6 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
 //        设置滚动条
         friendScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         JPanel jPanel = new JPanel();
-        JSONObject friends = userInfo.getFriends();
         JLabel[] jls = new JLabel[friends.size()];
         for(int i=0;i<jls.length;i++){
             //new JLabel(文本,图片地址,放的位置);
@@ -293,6 +286,8 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
                     f.put("userId",userInfo.getId());
                     f.put("userName",userInfo.getNickname());
                     MsgView msgView = new MsgView(f);
+                    qqPublicVar.msgViewList.put(friend.get("id").toString(),msgView);
+
                     msgView.setVisible(true);
                     msgView.setLocationRelativeTo(null);
                     System.out.println(f);
@@ -307,7 +302,7 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
     /**
      * 设置群组列表
      */
-    public void setGroupScrollPane() {
+    public void setGroupScrollPane(JSONObject groups) {
         groupScrollPane = new JScrollPane();
         add(groupScrollPane);
         groupScrollPane.setBounds(0, 190, 300, 460);
@@ -316,7 +311,6 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
 //        设置滚动条
         groupScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         JPanel jPanel = new JPanel();
-        JSONObject groups = userInfo.getGroups();
         JLabel[] jls = new JLabel[groups.size()];
         for(int i=0;i<jls.length;i++){
             //new JLabel(文本,图片地址,放的位置);
