@@ -1,6 +1,8 @@
 package com.fanshuhua.webSocket;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fanshuhua.Model.MsgViewVo;
+import com.fanshuhua.view.MsgView;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -24,8 +26,15 @@ public class MsgWebSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
-        System.out.println("收到消息：" + s);
-
+        System.out.println(s);
+        JSONObject jsonObject = JSONObject.parseObject(s);
+        String friendId = jsonObject.getString("sender");
+        MsgView msgView = MsgViewVo.getMap(friendId);
+        if(msgView != null){
+            msgView.printFriendMsg(jsonObject.getString("message"));
+        }
+//        MsgView msgView = new MsgView();
+//        msgView.printFriendMsg(s);
     }
 
     @Override
@@ -36,6 +45,7 @@ public class MsgWebSocket extends WebSocketClient {
     @Override
     public void onError(Exception e) {
         System.out.println("发生错误");
+        e.printStackTrace();
     }
 
     /**
