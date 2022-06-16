@@ -31,14 +31,14 @@ public class MsgView extends JFrame{
     private String userId;
     //用户name
     private String userName;
-    {
-        friendId="10001";
-        friendName="董小绿";
-        friendStatus="在线";
-        friendAvatar="1";
-        userId="10003";
-        userName="龙破天";
-    }
+//    {
+//        friendId="10003";
+//        friendName="董小绿";
+//        friendStatus="在线";
+//        friendAvatar="1";
+//        userId="10001";
+//        userName="龙破天";
+//    }
 
     public static void main(String[] args) {
 
@@ -53,12 +53,12 @@ public class MsgView extends JFrame{
 
     public MsgView(JSONObject json) {
         super();
-//        this.friendId=json.getString("friendId");
-//        this.friendName=json.getString("friendName");
-//        this.friendStatus=json.getString("friendStatus");
-//        this.friendAvatar=json.getString("friendAvatar");
-//        this.userId=json.getString("userId");
-//        this.userName=json.getString("userName");
+        this.friendId=json.getString("friendId");
+        this.friendName=json.getString("friendName");
+        this.friendStatus=json.getString("friendStatus");
+        this.friendAvatar=json.getString("friendAvatar");
+        this.userId=json.getString("userId");
+        this.userName=json.getString("userName");
 
         this.setUndecorated(true);
         initGUI();
@@ -71,7 +71,7 @@ public class MsgView extends JFrame{
     }
 
     private void initGUI() {
-        MsgWebSocket mws = new MsgWebSocket("ws://192.168.0.115:8080/webSocket/", "10003");
+        MsgWebSocket mws = new MsgWebSocket("ws://192.168.0.115:8080/webSocket/", userId);
         mws.connect();
         try {
             setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

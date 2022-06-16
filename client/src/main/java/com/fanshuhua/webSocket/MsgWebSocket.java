@@ -29,6 +29,7 @@ public class MsgWebSocket extends WebSocketClient {
         System.out.println(s);
         JSONObject jsonObject = JSONObject.parseObject(s);
         String friendId = jsonObject.getString("sender");
+        System.out.println(friendId);
         MsgView msgView = MsgViewVo.getMap(friendId);
         if(msgView != null){
             msgView.printFriendMsg(jsonObject.getString("message"));
@@ -68,14 +69,38 @@ public class MsgWebSocket extends WebSocketClient {
     }
 
     public static void main(String[] args) {
-        MsgWebSocket client = new MsgWebSocket("ws://localhost:8080/webSocket/", "10001");
-        client.connect();
+        //    {
+//        friendId="10003";
+//        friendName="董小绿";
+//        friendStatus="在线";
+//        friendAvatar="1";
+//        userId="10001";
+//        userName="龙破天";
+//    }
+        String s = "{friendId:10003,friendName:'董小绿'," +
+                "friendStatus:'在线',friendAvatar:1," +
+                "userId:'10001',userName:'龙破天'}";
+        JSONObject object = new JSONObject();
+        object.put("friendId","10003");
+        object.put("friendName","董小绿");
+        object.put("friendStatus","在线");
+        object.put("friendAvatar","1");
+        object.put("userId","10001");
+        object.put("userName","龙破天");
+
+//        MsgWebSocket client = new MsgWebSocket("ws://192.168.0.115:8080/webSocket/", "10001");
+//        client.connect();
+
+        MsgView inst = new MsgView(object);
+        inst.setLocationRelativeTo(null);
+        inst.setVisible(true);
+        MsgViewVo.setMap("10003",inst);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        client.sendMessage("hello","friend","text","10002");
+//        client.sendMessage("hello","friend","text","10003");
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
