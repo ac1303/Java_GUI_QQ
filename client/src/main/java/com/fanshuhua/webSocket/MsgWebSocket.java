@@ -52,12 +52,15 @@ public class MsgWebSocket extends WebSocketClient {
         object.put("MsgType",MsgType);
         object.put("toUserId",toUserId);
         object.put("message",message);
+        System.out.println("发送消息：" + object.toJSONString());
         this.send(object.toJSONString());
     }
 
     public static void main(String[] args) {
         MsgWebSocket client = new MsgWebSocket("ws://localhost:8080/webSocket/", "10000");
         client.connect();
+        MsgWebSocket client2 = new MsgWebSocket("ws://localhost:8080/webSocket/", "10001");
+        client2.connect();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
