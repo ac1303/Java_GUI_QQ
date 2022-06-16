@@ -2,6 +2,9 @@ package com.fanshuhua.view;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fanshuhua.Model.UserInfo;
+import com.fanshuhua.Model.WebSocket;
+import com.fanshuhua.properties.PropertiesUtil;
+import com.fanshuhua.webSocket.MsgWebSocket;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +20,16 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
 
     public void init(UserInfo userInfo) {
         this.userInfo = userInfo;
+
+        WebSocket.s=new MsgWebSocket(PropertiesUtil.get("websocketUrl"), userInfo.getId());
+        WebSocket.s.connect();
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        WebSocket.s.sendMessage("hello","friend","text","10001");
+
         setSize(300,680);
         setUndecorated(true);
         setLayout(null);
@@ -38,7 +51,13 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
 //        设置背景图片
         closeBtn.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("images/QQLoginView/关 闭.png"), "关闭"));
 //        监听点击关闭当前窗口
-        closeBtn.addActionListener(e -> dispose());
+        closeBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WebSocket.s.close();
+                dispose();
+            }
+        });
 //        设置按钮可见
         closeBtn.setVisible(true);
 //        去掉边框线
@@ -263,13 +282,22 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
             jls[i].setText(friend.get("nickname")+"("+friend.get("status")+")");
             jls[i].setHorizontalAlignment(SwingConstants.LEFT);
 //            设置点击事件
-            int finalI = i;
             jls[i].addMouseListener(new MouseAdapter() {
-                                        @Override
-                                        public void mouseClicked(MouseEvent e) {
-                                            JOptionPane.showMessageDialog(null, "点击了"+ finalI);
-                                        }
-                                    });
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    JSONObject f=new JSONObject();
+                    f.put("friendId",friend.get("id"));
+                    f.put("friendName",friend.get("nickname"));
+                    f.put("friendStatus",friend.get("status"));
+                    f.put("friendAvatar",friend.get("avatar"));
+                    f.put("userId",userInfo.getId());
+                    f.put("userName",userInfo.getNickname());
+                    MsgView msgView = new MsgView(f);
+                    msgView.setVisible(true);
+                    msgView.setLocationRelativeTo(null);
+                    System.out.println(f);
+                }
+            });
             jPanel.add(jls[i]);
         }
         jPanel.setLayout(new GridLayout(50, 1, 0,10));

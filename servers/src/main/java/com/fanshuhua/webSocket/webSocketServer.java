@@ -68,13 +68,13 @@ public class webSocketServer {
         object.put("message",message);
         if (session1 != null) {
             session1.getAsyncRemote().sendText(object.toJSONString());
-            object.put("status","成功");
+//            object.put("status","成功");
         }else {
             object.put("status","失败");
 //            描述
             object.put("description","对方不在线");
+            session.getAsyncRemote().sendText(object.toJSONString());
         }
-        session.getAsyncRemote().sendText(object.toJSONString());
     }
 
 
