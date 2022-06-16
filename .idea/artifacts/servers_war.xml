@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="servers:war">
+    <output-path>$PROJECT_DIR$/servers/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <exploded>false</exploded>
+        <module>servers</module>
+        <packaging>war</packaging>
+        <unpackNestedArchives>false</unpackNestedArchives>
+      </options>
+    </properties>
+    <root id="archive" name="servers-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="servers:war exploded" />
+    </root>
+  </artifact>
+</component>
