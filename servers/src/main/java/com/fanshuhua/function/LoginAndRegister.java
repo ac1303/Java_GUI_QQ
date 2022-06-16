@@ -9,6 +9,8 @@ import com.alibaba.fastjson.JSONObject;
 public class LoginAndRegister {
 
     public static JSONObject login(String username, String password) {
+//        JSONObject jsonObject = new JSONObject();
+
         JSONObject jsonObject = new JSONObject();
 //        状态码
         jsonObject.put("status", "success");
