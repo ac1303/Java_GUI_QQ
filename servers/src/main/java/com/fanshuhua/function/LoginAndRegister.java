@@ -48,6 +48,7 @@ public class LoginAndRegister {
         user.put("signature", "这是张三的个性签名");
         jsonObject.put("user", user);
 
+        System.out.println(jsonObject.toJSONString());
         return jsonObject;
     }
 }
