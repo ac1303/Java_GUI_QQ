@@ -250,20 +250,17 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
      * 设置联系人列表
      */
     public void setFriendScrollPane(JSONObject friends) {
-        if (friendScrollPane != null) {
-//            清空列表
-            friendScrollPane.removeAll();
-        }else {
-            friendScrollPane = new JScrollPane();
-            add(friendScrollPane);
-        }
+        friendScrollPane = new JScrollPane();
+        add(friendScrollPane);
         friendScrollPane.setBounds(0,190,300,460);
 //        去掉边框
         friendScrollPane.setBorder(null);
 //        设置滚动条
         friendScrollPane.getVerticalScrollBar().setUI(new MyScrollBarUI());
         JPanel jPanel = new JPanel();
+        System.out.println("friends.size"+friends.size());
         JLabel[] jls = new JLabel[friends.size()];
+        System.out.println("jls.length"+jls.length);
         for(int i=0;i<jls.length;i++){
             //new JLabel(文本,图片地址,放的位置);
             JSONObject friend = friends.getJSONObject(String.valueOf(i));

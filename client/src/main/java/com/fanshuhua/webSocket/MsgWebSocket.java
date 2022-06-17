@@ -40,6 +40,7 @@ public class MsgWebSocket extends WebSocketClient {
                     break;
                 }
             }
+            System.out.println(friends+"================");
             qqPublicVar.userInfo.setFriends(friends);
             qqPublicVar.qqMainView.setFriendScrollPane(friends);
             return;
@@ -48,6 +49,25 @@ public class MsgWebSocket extends WebSocketClient {
             MsgView msgView = qqPublicVar.msgViewList.get(friendId);
             if (msgView != null) {
                 msgView.printFriendMsg(jsonObject.getString("message"));
+            }else {
+//                查询好友信息
+                JSONObject friends=qqPublicVar.userInfo.getFriends();
+                for (int i=0;i<friends.size();i++) {
+                    JSONObject friend = friends.getJSONObject(String.valueOf(i));
+                    if (friend.getString("id").equals(jsonObject.get("sender"))) {
+                        JSONObject f=new JSONObject();
+                        f.put("friendId",jsonObject.get("sender"));
+                        f.put("friendName",friend.get("nickname"));
+                        f.put("friendStatus","在线");
+                        f.put("friendAvatar",friend.get("avatar"));
+                        f.put("userId",qqPublicVar.userInfo.getId());
+                        f.put("userName",qqPublicVar.userInfo.getNickname());
+                        msgView = new MsgView(f);
+                        qqPublicVar.msgViewList.put(jsonObject.get("sender").toString(),msgView);
+                        msgView.setVisible(true);
+                        msgView.setLocationRelativeTo(null);
+                    }
+                }
             }
         }
     }

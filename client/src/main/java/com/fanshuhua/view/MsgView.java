@@ -122,6 +122,8 @@ public class MsgView extends JFrame{
                     jButton2.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+//                            从消息列表中删除
+                            qqPublicVar.msgViewList.remove(friendId);
                             dispose();
                         }
                     });
@@ -172,6 +174,8 @@ public class MsgView extends JFrame{
                     closeBtn.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
+//                            从消息列表中删除
+                            qqPublicVar.msgViewList.remove(friendId);
                             dispose();
                         }
                     });
