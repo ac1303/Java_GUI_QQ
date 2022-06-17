@@ -26,13 +26,14 @@ public class MsgWebSocket extends WebSocketClient {
 
     @Override
     public void onMessage(String s) {
-        System.out.println(s);
+        System.out.println("收到消息"+s);
         JSONObject jsonObject = JSONObject.parseObject(s);
 //        接收到用户上线下线消息
         if (jsonObject.getString("type").equals("在线")||jsonObject.getString("type").equals("离线")) {
             JSONObject friends=qqPublicVar.userInfo.getFriends();
             for (int i=0;i<friends.size();i++) {
                 JSONObject friend = friends.getJSONObject(String.valueOf(i));
+                System.out.println(friend);
                 if (friend.getString("id").equals(jsonObject.getString("userId"))) {
                     friend.put("status", jsonObject.getString("type"));
                     friends.put(String.valueOf(i),friend);
@@ -41,7 +42,8 @@ public class MsgWebSocket extends WebSocketClient {
             }
             qqPublicVar.userInfo.setFriends(friends);
             qqPublicVar.qqMainView.setFriendScrollPane(friends);
-        }else if (jsonObject.getString("type").equals("friend")) {
+            return;
+        }else if (jsonObject.getString("type").equals("私聊")) {
             String friendId = jsonObject.getString("sender");
             MsgView msgView = qqPublicVar.msgViewList.get(friendId);
             if (msgView != null) {

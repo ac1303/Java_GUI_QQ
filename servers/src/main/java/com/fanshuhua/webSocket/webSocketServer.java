@@ -74,6 +74,7 @@ public class webSocketServer {
         Session session1 = webSocketMap.get(toUserId);
         String sender = getSessionId(session);
         JSONObject object = new JSONObject();
+        object.put("type","私聊");
         object.put("sender",sender);
         object.put("message",message);
         if (session1 != null) {
@@ -127,6 +128,9 @@ public class webSocketServer {
             }
         }
         //        群发用户下线消息
+        if(id == null) {
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type","离线");
         jsonObject.put("userId",id);

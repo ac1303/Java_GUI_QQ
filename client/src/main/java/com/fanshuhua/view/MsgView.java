@@ -119,7 +119,12 @@ public class MsgView extends JFrame{
                     jButton2.setFocusPainted(false);
                     jButton2.setBackground(Color.white);
                     jButton2.setForeground(Color.black);
-                    jButton2.addActionListener(e -> System.exit(0));
+                    jButton2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            dispose();
+                        }
+                    });
                     jPanel1.add(jButton2);
                 }
                 {
@@ -164,7 +169,12 @@ public class MsgView extends JFrame{
                     closeBtn.setBounds(670,10,30,30);
                     closeBtn.setContentAreaFilled(false);
                     closeBtn.setIcon(new ImageIcon("client/src/main/resources/images/QQLoginView/关 闭.png", "关闭"));
-                    closeBtn.addActionListener(e -> System.exit(0));
+                    closeBtn.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            dispose();
+                        }
+                    });
                     closeBtn.setVisible(true);
                     closeBtn.setBorderPainted(false);
                     closeBtn.setFocusPainted(false);

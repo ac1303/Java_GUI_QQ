@@ -234,7 +234,7 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
 //        去掉边框
         msgScrollPane.setBorder(null);
 //        设置滚动条
-        msgScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        msgScrollPane.getVerticalScrollBar().setUI(new MyScrollBarUI());
         JPanel jPanel = new JPanel();
         JLabel[] jls = new JLabel[3];
         for(int i=0;i<jls.length;i++){
@@ -250,13 +250,18 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
      * 设置联系人列表
      */
     public void setFriendScrollPane(JSONObject friends) {
-        friendScrollPane = new JScrollPane();
-        add(friendScrollPane);
+        if (friendScrollPane != null) {
+//            清空列表
+            friendScrollPane.removeAll();
+        }else {
+            friendScrollPane = new JScrollPane();
+            add(friendScrollPane);
+        }
         friendScrollPane.setBounds(0,190,300,460);
 //        去掉边框
         friendScrollPane.setBorder(null);
 //        设置滚动条
-        friendScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        friendScrollPane.getVerticalScrollBar().setUI(new MyScrollBarUI());
         JPanel jPanel = new JPanel();
         JLabel[] jls = new JLabel[friends.size()];
         for(int i=0;i<jls.length;i++){
@@ -309,7 +314,7 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
 //        去掉边框
         groupScrollPane.setBorder(null);
 //        设置滚动条
-        groupScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        groupScrollPane.getVerticalScrollBar().setUI(new MyScrollBarUI());
         JPanel jPanel = new JPanel();
         JLabel[] jls = new JLabel[groups.size()];
         for(int i=0;i<jls.length;i++){
