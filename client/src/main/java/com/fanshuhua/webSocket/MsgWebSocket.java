@@ -66,6 +66,7 @@ public class MsgWebSocket extends WebSocketClient {
                         qqPublicVar.msgViewList.put(jsonObject.get("sender").toString(),msgView);
                         msgView.setVisible(true);
                         msgView.setLocationRelativeTo(null);
+                        msgView.printFriendMsg(jsonObject.getString("message"));
                     }
                 }
             }
