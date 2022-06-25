@@ -11,7 +11,7 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author 安宸
+ * @author 范书华
  * @create 2022/2/5 11:23
  */
 public class HttpRequest {

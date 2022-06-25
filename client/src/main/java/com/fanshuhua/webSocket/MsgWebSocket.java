@@ -111,5 +111,16 @@ public class MsgWebSocket extends WebSocketClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+//        每隔五秒向100000发送一次消息
+        int i=0;
+        while (true) {
+            msgWebSocket.sendMessage("第"+i+"条消息","friend","text","100000");
+            try {
+                i++;
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

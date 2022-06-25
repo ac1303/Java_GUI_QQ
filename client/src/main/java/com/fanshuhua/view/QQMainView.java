@@ -45,12 +45,9 @@ public class QQMainView extends JFrame implements ActionListener, ItemListener {
 //        设置背景图片
         closeBtn.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("images/QQLoginView/关 闭.png"), "关闭"));
 //        监听点击关闭当前窗口
-        closeBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                qqPublicVar.s.close();
-                dispose();
-            }
+        closeBtn.addActionListener(e -> {
+            qqPublicVar.s.close();
+            dispose();
         });
 //        设置按钮可见
         closeBtn.setVisible(true);

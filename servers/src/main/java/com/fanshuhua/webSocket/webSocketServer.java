@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ServerEndpoint("/webSocket/{userId}")
 public class webSocketServer {
   //线程安全的Map
-    private static ConcurrentHashMap<String,Session> webSocketMap = new ConcurrentHashMap<String,Session>();//建立连接的方法
+    private static ConcurrentHashMap<String,Session> webSocketMap = new ConcurrentHashMap<String,Session>();
 
     @OnOpen
     public void onOpen(Session session,@PathParam("userId")String  userId) {
@@ -79,9 +79,9 @@ public class webSocketServer {
         object.put("message",message);
         if (session1 != null) {
             session1.getAsyncRemote().sendText(object.toJSONString());
-//            object.put("status","成功");
+            object.put("status","success");
         }else {
-            object.put("status","失败");
+            object.put("status","false");
 //            描述
             object.put("description","对方不在线");
             session.getAsyncRemote().sendText(object.toJSONString());
